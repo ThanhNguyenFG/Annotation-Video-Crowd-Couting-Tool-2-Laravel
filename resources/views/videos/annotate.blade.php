@@ -15,13 +15,13 @@
 		<tr>
 			<td>
 				<div class="container">
-				    <img class='img' id='img1' src="http://ann_tool.test/dataset/{{$curr_video->name}}/0.jpg">
+				    <img class='img' id='img1' src="{{URL::asset('dataset/'.$curr_video->name.'/0.jpg')}}">
 				    <canvas class="canvas" id="canvas1"></canvas>
 				</div>
 			</td>
 			<td>
 				<div class="container">
-					<img class='img' id='img2'src="http://ann_tool.test/dataset/{{$curr_video->name}}/1.jpg"/>
+					<img class='img' id='img2'src="{{URL::asset('dataset/'.$curr_video->name.'/1.jpg')}}"/>
 				    <canvas class="canvas" id="canvas2"></canvas>
 				</div>
 			</td>
@@ -145,11 +145,7 @@
 			curr_frame = Number(document.getElementById("curr_frame").innerHTML);
 			if (change == 1)
 			{
-				if (e.code == "ArrowRight")
-					curr_frame += 1;
-				else if (e.code == "ArrowLeft")
-					curr_frame -= 1;
-				change_img();
+				checksave(e);
 			}			
 		}
 		//Save
@@ -605,29 +601,30 @@
 
 	function change_img()
 	{
+		path = "{{URL::asset('dataset/'. $curr_video->name)}}";
 		document.getElementById("curr_frame").innerHTML = curr_frame;
 		var new_img1_src = "";
 		var new_img2_src = "";
 		if (Number(curr_frame) < Number(1))
 		{
-			new_img1_src = new_img1_src.concat("http://ann_tool.test/dataset/","{{$curr_video->name}}","/",(Number("{{$curr_video->num_frame}}")-1).toString(),".jpg");
-			new_img2_src = new_img2_src.concat("http://ann_tool.test/dataset/","{{$curr_video->name}}","/","{{$curr_video->num_frame}}",".jpg");
+			new_img1_src = new_img1_src.concat(path,"/",(Number("{{$curr_video->num_frame}}")-1).toString(),".jpg");
+			new_img2_src = new_img2_src.concat(path,"/","{{$curr_video->num_frame}}",".jpg");
 			document.getElementById("curr_frame").innerHTML = "{{$curr_video->num_frame}}";
 			curr_frame = Number("{{$curr_video->num_frame}}");
 			load();
 		}
 		else if (Number(curr_frame) > Number("{{$curr_video->num_frame}}"))
 		{
-			new_img1_src = new_img1_src.concat("http://ann_tool.test/dataset/","{{$curr_video->name}}","/","0",".jpg");
-			new_img2_src = new_img2_src.concat("http://ann_tool.test/dataset/","{{$curr_video->name}}","/","1",".jpg");
+			new_img1_src = new_img1_src.concat(path,"/","0",".jpg");
+			new_img2_src = new_img2_src.concat(path,"/","1",".jpg");
 			document.getElementById("curr_frame").innerHTML = 1;
 			curr_frame = 1;
 			load();
 		}
 		else 
 		{
-			new_img1_src = new_img1_src.concat("http://ann_tool.test/dataset/","{{$curr_video->name}}","/",(Number(curr_frame)-1).toString(),".jpg");
-			new_img2_src = new_img2_src.concat("http://ann_tool.test/dataset/","{{$curr_video->name}}","/",curr_frame.toString(),".jpg");
+			new_img1_src = new_img1_src.concat(path,"/",(Number(curr_frame)-1).toString(),".jpg");
+			new_img2_src = new_img2_src.concat(path,"/",curr_frame.toString(),".jpg");
 			load();
 		}
 		document.getElementById("img1").src = new_img1_src;
@@ -689,6 +686,28 @@
 	function how_to_use()
 	{
 		alert("HOW TO USE\nLeft Click: Add new point in current frame\nRight Click: Select point\nCtrl + Right Click: Move selected point in current frame to new position\nKeyS: Save\nKeyM: Match id of selected point in current frame and previous frame\nKeyI: Show and unshow id instead of rectangle\nKeyA/KeyB: Delete points in all after/before files have same id with selected point in current frame\nEscape: Unselected points\nArrowLeft/ArrowRight: Move to previous/next frame");
+	}
+
+	function checksave(e)
+	{
+		change = 0;
+		if (save == 1)
+		{
+			$.when(upload_curr_json()).done(function(a1){
+				check_curr_points = a1;
+				if(JSON.stringify(check_curr_points)==JSON.stringify(curr_points)) 
+				{
+					change = 1;
+					if (e.code == "ArrowRight")
+						curr_frame += 1;
+					else if (e.code == "ArrowLeft")
+						curr_frame -= 1;
+					change_img();
+				}
+				else
+				 	alert("You haven't saved yet! Please press keyS to save before you change image");
+			});
+		}
 	}
 
 </script>
