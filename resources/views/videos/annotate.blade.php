@@ -15,13 +15,13 @@
 		<tr>
 			<td>
 				<div class="container">
-				    <img class='img' id='img1' src="{{URL::asset('dataset/1/0.jpg')}}" />
+				    <img class='img' id='img1' src="http://ann_tool.test/dataset/{{$curr_video->name}}/0.jpg">
 				    <canvas class="canvas" id="canvas1"></canvas>
 				</div>
 			</td>
 			<td>
 				<div class="container">
-					<img class='img' id='img2' src="{{URL::asset('dataset/1/1.jpg')}}" />
+					<img class='img' id='img2'src="http://ann_tool.test/dataset/{{$curr_video->name}}/1.jpg"/>
 				    <canvas class="canvas" id="canvas2"></canvas>
 				</div>
 			</td>
