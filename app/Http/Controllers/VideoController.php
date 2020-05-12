@@ -339,14 +339,14 @@ class VideoController extends Controller
         $curr_frame = $frame_index;
 
         $points = $_POST['points'];
-        $path_json = (string)Auth::user()->selected_video_id . "/" . (string)$frame_index . ".json";
+        $path_json = (string)Video::find(Auth::user()->selected_video_id)->name . "/" . (string)$frame_index . ".json";
         Storage::disk('public')->put($path_json, response()->json($points)->getContent());
 
         $delete_id = json_decode($_POST['delete_id']);
         $check = true;
         while ($check)
         {
-            $path_json = (string)Auth::user()->selected_video_id . "/" . (string)$frame_index . ".json";
+            $path_json = (string)Video::find(Auth::user()->selected_video_id)->name . "/" . (string)$frame_index . ".json";
             if (Storage::disk('public')->exists($path_json) == true)
             {
                 $curr_points = Storage::disk('public')->get($path_json);
