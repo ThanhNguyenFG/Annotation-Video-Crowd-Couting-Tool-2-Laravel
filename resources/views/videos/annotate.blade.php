@@ -169,16 +169,16 @@
 			{
 				if (Number(old_curr_point[2]) == -1 && Number(old_pre_point[2]) == -1)
 				{
-					curr_points[Number(curr_point[3])][2] = pre_point[2];
+					curr_points[Number(curr_point[3])][2] = pre_point[2].toString();
 					check_curr[Number(curr_point[3])] = 1;
 					check_pre[Number(pre_point[3])] = 1;
 				} 
 				else if	(Number(old_curr_point[2]) != -1)
 				{
-					curr_points[Number(curr_point[3])][2] = pre_point[2];
+					curr_points[Number(curr_point[3])][2] = pre_point[2].toString();
 					check_curr[Number(curr_point[3])] = 1;
 					check_pre[Number(pre_point[3])] = 1;
-					curr_points[Number(old_curr_point[3])][2] = curr_point[2]; 
+					curr_points[Number(old_curr_point[3])][2] = curr_point[2].toString(); 
 					if (Number(old_pre_point[2]) == -1)
 						check_curr[Number(old_curr_point[3])] = 0;
 						
@@ -226,7 +226,7 @@
 						var point = getCursorPosition(img2, evt);
 						if (Number(curr_point[2]) != -1)
 						{
-							curr_points[Number(curr_point[3])] = [point[0],point[1],curr_points[Number(curr_point[3])][2]];
+							curr_points[Number(curr_point[3])] = [point[0].toString(),point[1].toString(),curr_points[Number(curr_point[3])][2].toString()];
 							updateCanvas2();
 						}
 					}	
@@ -260,7 +260,7 @@
 		if (dragging == 0){
             var point = getCursorPosition(img2, e);
 			max_id = max_id + 1;
-			curr_points.push([point[0], point[1], max_id]);	
+			curr_points.push([point[0].toString(), point[1].toString(), max_id.toString()]);	
 			check_curr.push(0);
 			updateCanvas2();
         }
@@ -583,7 +583,10 @@
 			       	type: "POST", 
 			       	url: "/save_json", 
 			       	data: { max_id: max_id, frame_index: curr_frame, points: curr_points},
-			       	dataType: 'json'
+			       	dataType: 'json',
+			    	complete: function(a) {
+			       		change = 1;
+			       	}
 				}); 
 			}
 	}
@@ -695,6 +698,8 @@
 		{
 			$.when(upload_curr_json()).done(function(a1){
 				check_curr_points = a1;
+				console.log(check_curr_points);
+				console.log(curr_points);
 				if(JSON.stringify(check_curr_points)==JSON.stringify(curr_points)) 
 				{
 					change = 1;
@@ -705,7 +710,9 @@
 					change_img();
 				}
 				else
+				{
 				 	alert("You haven't saved yet! Please press keyS to save before you change image");
+				}
 			});
 		}
 	}
