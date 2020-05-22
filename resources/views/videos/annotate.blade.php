@@ -632,7 +632,7 @@
 		}
 		document.getElementById("img1").src = new_img1_src;
 		document.getElementById("img2").src = new_img2_src;
-		document.getElementById("pre_image").innerHTML = "".concat("Previson frame: ",(Number(curr_frame)-1).toString(),".jpg");
+		document.getElementById("pre_image").innerHTML = "".concat("Previous frame: ",(Number(curr_frame)-1).toString(),".jpg");
 		document.getElementById("curr_image").innerHTML = "".concat("Current frame: ",(curr_frame).toString(),".jpg");
 		document.getElementById("frame_index").placeholder  = "".concat((curr_frame).toString(),"/","{{$curr_video->num_frame}}");
 		images = wheelzoom(document.querySelectorAll('img'), {zoom: 0.1, maxZoom: 10});
