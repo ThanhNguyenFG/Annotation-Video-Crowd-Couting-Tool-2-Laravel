@@ -698,8 +698,6 @@
 		{
 			$.when(upload_curr_json()).done(function(a1){
 				check_curr_points = a1;
-				console.log(check_curr_points);
-				console.log(curr_points);
 				if(JSON.stringify(check_curr_points)==JSON.stringify(curr_points)) 
 				{
 					change = 1;
