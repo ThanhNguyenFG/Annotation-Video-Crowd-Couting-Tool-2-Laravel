@@ -233,6 +233,10 @@
 				});
 			}
 		}
+		else if (e.code == "KeyT" )
+		{
+			test();
+		}
 	});
 	//Catch mouse events----------------------------------------------------------------------------------
 	// Right click to select
@@ -577,18 +581,18 @@
 	function save_json()
 	{
 		if (curr_points.length != 0)
-			{
-				$.post({ 
-					headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-			       	type: "POST", 
-			       	url: "/save_json", 
-			       	data: { max_id: max_id, frame_index: curr_frame, points: curr_points},
-			       	dataType: 'json',
-			    	complete: function(a) {
-			       		change = 1;
-			       	}
-				}); 
-			}
+		{
+			$.post({ 
+				headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+		       	type: "POST", 
+		       	url: "/save_json", 
+		       	data: { max_id: Number(max_id), frame_index: curr_frame, points: JSON.stringify(curr_points)},
+		       	dataType: 'json',
+		    	complete: function(a) {
+		       		change = 1;
+		       	}
+			}); 
+		}
 	}
 
 	function change_img_input()
@@ -652,7 +656,7 @@
 					headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
 			       	type: "POST", 
 			       	url: "/delete_before", 
-			       	data: { max_id: max_id, frame_index: curr_frame, delete_id: Number(curr_point[2]), points: curr_points},
+			       	data: { max_id: Number(max_id), frame_index: curr_frame, delete_id: Number(curr_point[2]), points: JSON.stringify(curr_points)},
 			       	dataType: 'json',
 			       	complete: function(a) {
 			       		max_id = JSON.parse(a.responseText);
@@ -675,7 +679,7 @@
 					headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
 			       	type: "POST", 
 			       	url: "/delete_after", 
-			       	data: { max_id: max_id, frame_index: curr_frame, delete_id: Number(curr_point[2]), points: curr_points},
+			       	data: { max_id: Number(max_id), frame_index: curr_frame, delete_id: Number(curr_point[2]), points: JSON.stringify(curr_points)},
 			       	dataType: 'json',
 			       	complete: function(a) {
 			       		max_id = JSON.parse(a.responseText);

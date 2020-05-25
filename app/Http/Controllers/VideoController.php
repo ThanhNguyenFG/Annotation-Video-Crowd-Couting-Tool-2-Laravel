@@ -311,7 +311,7 @@ class VideoController extends Controller
         $frame_index = json_decode($_POST['frame_index']);
         $points = $_POST['points'];
         $path_json = (string)Video::find(Auth::user()->selected_video_id)->name . "/" . (string)$frame_index . ".json";
-        Storage::disk('public')->put($path_json, response()->json($points)->getContent());
+        Storage::disk('public')->put($path_json, response()->json(json_decode($points))->getContent());
     }
 
     public function upload_json()
@@ -340,7 +340,7 @@ class VideoController extends Controller
 
         $points = $_POST['points'];
         $path_json = (string)Video::find(Auth::user()->selected_video_id)->name . "/" . (string)$frame_index . ".json";
-        Storage::disk('public')->put($path_json, response()->json($points)->getContent());
+        Storage::disk('public')->put($path_json, response()->json(json_decode($points))->getContent());
 
         $delete_id = json_decode($_POST['delete_id']);
         $check = true;
@@ -386,6 +386,5 @@ class VideoController extends Controller
         $max_id = $this->delete_array(-1);  
         return $max_id;
     }
-
 
 }
